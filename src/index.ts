@@ -18,3 +18,7 @@ export function text(body: string) {
 export function json<T>(data: T extends string ? never : T) {
   return Response.json(data, { headers: corsHeaders });
 }
+
+export function error(status: number) {
+  return new Response(null, { status, headers: corsHeaders });
+}
