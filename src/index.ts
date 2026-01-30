@@ -1,3 +1,9 @@
+export async function readJson<T>(req: Request): Promise<T> {
+  const ct = req.headers.get('content-type') || '';
+  if (!ct.includes('application/json')) throw new Error('Content-Type must be application/json');
+  return (await req.json()) as T;
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -19,6 +25,6 @@ export function json<T>(data: T extends string ? never : T) {
   return Response.json(data, { headers: corsHeaders });
 }
 
-export function error(status: number) {
-  return new Response(null, { status, headers: corsHeaders });
+export function error(status: number, message?: string) {
+  return new Response(message, { status, headers: corsHeaders });
 }
